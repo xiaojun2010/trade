@@ -7,10 +7,16 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@vertx/eventbus-bridge-client.js": "^1.0.0-3-SNAPSHOT",
+    "axios": "^1.7.8",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.14",
+    "js-md5": "^0.8.3",
+    "moment": "^2.30.1",
     "vue": "^2.6.14",
+    "vue-bus": "^1.2.1",
     "vue-router": "^3.5.1",
+    "vue-vertx3-eventbus-client": "^3.6.0",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
