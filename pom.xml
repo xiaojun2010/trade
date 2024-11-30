@@ -20,7 +20,12 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.2</version> <!-- 父依赖版本号 -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
 
 </project>
