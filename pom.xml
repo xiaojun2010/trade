@@ -10,6 +10,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>engine</module>
+        <module>counter</module>
+        <module>gateway</module>
+        <module>seq</module>
     </modules>
 
     <properties>
