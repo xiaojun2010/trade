@@ -14,6 +14,9 @@
         <module name="seq" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="multiplethread" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -21,6 +24,7 @@
       <module name="engine" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="gateway_demo" options="-parameters" />
+      <module name="multiplethread" options="-parameters" />
       <module name="seq" options="-parameters" />
     </option>
   </component>
