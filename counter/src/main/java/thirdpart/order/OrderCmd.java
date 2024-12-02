@@ -24,7 +24,7 @@ public class OrderCmd implements Serializable {
     final public long uid;
 
     /**
-     * 代码
+     * 股票代码
      */
     final public int code;
 
@@ -44,7 +44,7 @@ public class OrderCmd implements Serializable {
     final public long volume;
 
     /**
-     * 委托类型
+     * 委托类型：限价单、市价单、强平单、强减单、撤单
      * 1.LIMIT
      */
     final public OrderType orderType;

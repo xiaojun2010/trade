@@ -39,6 +39,7 @@ public class RbCmd {
     public List<MatchEvent> matchEventList;
 
     // 前置风控 --> 撮合 --> 发布
+    // 消费线程之间通讯
     public CmdResultCode resultCode;
 
     // 保存行情

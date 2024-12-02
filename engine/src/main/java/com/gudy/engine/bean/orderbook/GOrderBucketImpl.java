@@ -31,18 +31,21 @@ public class GOrderBucketImpl implements IOrderBucket {
     //3.委托列表 list行不通
     private final LinkedHashMap<Long, Order> entries = new LinkedHashMap<>();
 
-
+    //1.新增订单委托
     @Override
     public void put(Order order) {
         entries.put(order.getOid(), order);
+        //修改总委托量
         totalVolume += order.getVolume() - order.getTvolume();
     }
 
+    //2.移除订单
     @Override
     public Order remove(long oid) {
         //防止重复执行删除订单的请求
         Order order = entries.get(oid);
         if (order == null) {
+            //网络不好时订单可能已经被处理
             return null;
         }
         entries.remove(oid);

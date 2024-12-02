@@ -2,10 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="gateway_demo" />
         <module name="counter" />
         <module name="engine" />
         <module name="gateway" />
@@ -18,6 +20,7 @@
       <module name="counter" options="-parameters" />
       <module name="engine" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="gateway_demo" options="-parameters" />
       <module name="seq" options="-parameters" />
     </option>
   </component>

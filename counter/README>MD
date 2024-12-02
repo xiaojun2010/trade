@@ -1,0 +1,19 @@
+
+mvn dependency:tree
+
+mvn dependency:tree -Dverbose -Dincludes=logback-classic:asm
+
+
+mvn dependency:tree -Dverbose -Dincludes=asm:asm
+
+
+mvn dependency:tree -Dincludes=org.apache.logging.log4j:log4j-slf4j-impl:2.14.1
+
+https://blog.csdn.net/sgx1825192/article/details/137574943
+
+https://blog.csdn.net/kang9399052316/article/details/106013212
+
+https://blog.csdn.net/qq_43266564/article/details/129556019
+
+https://blog.csdn.net/weixin_46505978/article/details/123469636
+

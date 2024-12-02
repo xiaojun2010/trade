@@ -13,6 +13,7 @@
         <module>counter</module>
         <module>gateway</module>
         <module>seq</module>
+        <module>gateway_demo</module>
     </modules>
 
     <properties>

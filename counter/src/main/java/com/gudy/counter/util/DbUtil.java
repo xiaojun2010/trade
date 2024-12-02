@@ -261,7 +261,7 @@ public class DbUtil {
         param.put("Type", orderCmd.orderType.getType());
         param.put("Price", orderCmd.price);
         param.put("OCount", orderCmd.volume);
-        param.put("TCount", 0);
+        param.put("TCount", 0);//成交量
         param.put("Status", OrderStatus.NOT_SET.getCode());
 
         param.put("Data", TimeformatUtil.yyyyMMdd(orderCmd.timestamp));
