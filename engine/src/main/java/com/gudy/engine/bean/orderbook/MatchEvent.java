@@ -25,13 +25,13 @@ import thirdpart.order.OrderStatus;
 @NoArgsConstructor
 @ToString
 public final class MatchEvent {
-
+    //时间戳
     public long timestamp;
-
+    //会员ID
     public short mid;
-
+    //委托编号
     public long oid;
-
+    //订单状态
     public OrderStatus status = OrderStatus.NOT_SET;
 
     public long tid;

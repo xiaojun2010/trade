@@ -55,6 +55,7 @@ public class GOrderBucketImpl implements IOrderBucket {
         return order;
     }
 
+    //撮合方法
     @Override
     public long match(long volumeLeft, RbCmd triggerCmd, Consumer<Order> removeOrderCallback) {
         // S 46 --> 5 10 24

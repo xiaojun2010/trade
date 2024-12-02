@@ -118,7 +118,11 @@ public class EngineConfig {
 
         //2.撮合处理器(订单簿*****) 撮合/提供行情查询
         IntObjectHashMap<IOrderBook> orderBookMap = new IntObjectHashMap<>();
-        db.queryAllStockCode().forEach(code -> orderBookMap.put(code, new GOrderBookImpl(code)));
+        db.queryAllStockCode().forEach(
+                //股票代码 -> 撮合处理类
+                code -> orderBookMap.put(code, new GOrderBookImpl(code))
+        );
+        //定义处理 Handler
         final BaseHandler matchHandler = new StockMatchHandler(orderBookMap);
 
         //3.发布处理器

@@ -20,6 +20,7 @@ import java.util.TreeMap;
 @RequiredArgsConstructor
 public class GOrderBookImpl implements IOrderBook {
 
+    //股票代码
     @NonNull
     private int code;
 
@@ -27,6 +28,7 @@ public class GOrderBookImpl implements IOrderBook {
     private final NavigableMap<Long, IOrderBucket> sellBuckets = new TreeMap<>();
     private final NavigableMap<Long, IOrderBucket> buyBuckets = new TreeMap<>(Collections.reverseOrder());
 
+    //委托缓存
     private final LongObjectHashMap<Order> oidMap = new LongObjectHashMap<>();
 
     @Override
@@ -44,6 +46,7 @@ public class GOrderBookImpl implements IOrderBook {
         NavigableMap<Long, IOrderBucket> subMatchBuckets =
                 (cmd.direction == OrderDirection.SELL ? buyBuckets : sellBuckets)
                         .headMap(cmd.price, true);
+        //预撮合
         long tVolume = preMatch(cmd, subMatchBuckets);
         if (tVolume == cmd.volume) {
             return CmdResultCode.SUCCESS;
@@ -64,17 +67,22 @@ public class GOrderBookImpl implements IOrderBook {
         if (tVolume == 0) {
             genMatchEvent(cmd, OrderStatus.ORDER_ED);
         } else {
+            //告诉下游已经有部分成交了
             genMatchEvent(cmd, OrderStatus.PART_TRADE);
         }
 
-        //3.加入orderBucket
+        //3. 没有完全撮合完的 加入orderBucket
         final IOrderBucket bucket = (cmd.direction == OrderDirection.SELL ? sellBuckets : buyBuckets)
-                .computeIfAbsent(cmd.price, p -> {
-                    final IOrderBucket b = IOrderBucket.create(IOrderBucket.OrderBucketImplType.GUDY);
-                    b.setPrice(p);
-                    return b;
+                .computeIfAbsent(cmd.price, price -> {
+                    //生成一个新的 OrderBucket
+                    final IOrderBucket orderBucket = IOrderBucket.create(IOrderBucket.OrderBucketImplType.GUDY);
+                    orderBucket.setPrice(price);
+                    return orderBucket;
                 });
+        //把委托放进去
         bucket.put(order);
+
+        //缓存中添加该笔委托
         oidMap.put(cmd.oid, order);
 
         return CmdResultCode.SUCCESS;
@@ -83,12 +91,13 @@ public class GOrderBookImpl implements IOrderBook {
     private long preMatch(RbCmd cmd, NavigableMap<Long, IOrderBucket> matchingBuckets) {
         int tVol = 0;
         if (matchingBuckets.size() == 0) {
+            //没有符合条件的 bucket 直接返回
             return tVol;
         }
 
         List<Long> emptyBuckets = Lists.newArrayList();
         for (IOrderBucket bucket : matchingBuckets.values()) {
-
+            //撮合
             tVol += bucket.match(cmd.volume - tVol, cmd,
                     order -> oidMap.remove(order.getOid()));
 
@@ -122,6 +131,7 @@ public class GOrderBookImpl implements IOrderBook {
         event.oid = cmd.oid;
         event.status = status;
         event.volume = 0;
+        //有后续的处理线程
         cmd.matchEventList.add(event);
     }
 
@@ -161,6 +171,11 @@ public class GOrderBookImpl implements IOrderBook {
         data.code = code;
     }
 
+    /**
+     * 填充卖盘行情
+     * @param size
+     * @param data
+     */
     @Override
     public void fillSells(int size, L1MarketData data) {
         if (size == 0) {
@@ -181,6 +196,11 @@ public class GOrderBookImpl implements IOrderBook {
 
     }
 
+    /**
+     * 填充买盘行情
+     * @param size
+     * @param data
+     */
     @Override
     public void fillBuys(int size, L1MarketData data) {
         if (size == 0) {

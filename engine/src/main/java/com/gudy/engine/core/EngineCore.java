@@ -25,6 +25,7 @@ public class EngineCore {
 
     private final Disruptor<RbCmd> disruptor;
 
+    //生产一般是 200万 左右
     private static final int RING_BUFFER_SIZE = 1024;
 
     @Getter
@@ -36,15 +37,15 @@ public class EngineCore {
             @NonNull final BaseHandler pubHandler
     ) {
         this.disruptor = new Disruptor<>(
-                new RbCmdFactory(),
+                new RbCmdFactory(), //事件工厂
 
                 RING_BUFFER_SIZE,
 
-                new AffinityThreadFactory("aft_engine_core", AffinityStrategies.ANY),
+                new AffinityThreadFactory("aft_engine_core", AffinityStrategies.ANY),//线程工厂
 
-                ProducerType.SINGLE,
+                ProducerType.SINGLE, //生产线程类型
 
-                new BlockingWaitStrategy()
+                new BlockingWaitStrategy() //消费等待策略
         );
 
         this.api = new EngineApi(disruptor.getRingBuffer());
@@ -67,7 +68,7 @@ public class EngineCore {
         log.info("match engine start");
 
 
-        //4.定时发布行情任务
+        //4.定时发布行情任务 (还有一个是排队机广播的地方)
         new Timer().schedule(new HqPubTask(), 5000, HQ_PUB_RATE);
 
     }

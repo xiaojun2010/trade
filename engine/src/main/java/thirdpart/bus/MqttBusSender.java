@@ -21,6 +21,7 @@ public class MqttBusSender implements IBusSender {
     @NonNull
     private int port;
 
+    //消息编码
     @NonNull
     private IMsgCodec msgCodec;
 
@@ -62,10 +63,10 @@ public class MqttBusSender implements IBusSender {
 
     @Override
     public void publish(CommonMsg msg) {
-        sender.publish(Short.toString(msg.getMsgDst()),
+        sender.publish(Short.toString(msg.getMsgDst()), //发送的地址：柜台ID
                 msgCodec.encodeToBuffer(msg),
-                MqttQoS.AT_LEAST_ONCE,
-                false,
-                false);
+                MqttQoS.AT_LEAST_ONCE, //至少到达一次
+                false, //重复不判断
+                false); //不保留
     }
 }

@@ -8,13 +8,13 @@ import static thirdpart.hq.L1MarketData.L1_SIZE;
 
 public interface IOrderBook {
 
-    //1.新增委托
+    //1.新增委托【核心】
     CmdResultCode newOrder(RbCmd cmd);
 
-    //2.撤单
+    //2.撤单【核心】
     CmdResultCode cancelOrder(RbCmd cmd);
 
-    //3.查询行情快照
+    //3.查询行情快照【核心】
     default L1MarketData getL1MarketDataSnapshot() {
         final int buySize = limitBuyBucketSize(L1_SIZE);
         final int sellSize = limitSellBucketSize(L1_SIZE);

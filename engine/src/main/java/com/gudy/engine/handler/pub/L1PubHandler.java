@@ -22,13 +22,20 @@ import static thirdpart.bean.MsgConstants.MATCH_HQ_DATA;
 import static thirdpart.bean.MsgConstants.MATCH_ORDER_DATA;
 import static thirdpart.bean.MsgConstants.NORMAL;
 
+/**
+ * 行情处理器：
+ * 1. 往外广播行情
+ * 2. 柜台推过来的有成交的变化的委托，推回去
+ */
 @Log4j2
 @RequiredArgsConstructor
 public class L1PubHandler extends BaseHandler {
 
     public static final int HQ_PUB_RATE = 1000;
 
-
+    //缓存要发给每个柜台的数据
+    //注意：【成交】 +【随着行情】一起发布出去，并不是有一个成交就立马丢出去
+    //map : 柜台ID -> 要发给柜台的成交数据 列表
     @NonNull
     private final ShortObjectHashMap<List<MatchData>> matcherEventMap;
 
@@ -45,9 +52,9 @@ public class L1PubHandler extends BaseHandler {
                 matcherEventMap.get(e.mid).add(e.copy());
             }
         } else if (cmdType == CmdType.HQ_PUB) {
-            //1.五档行情
+            //1.五档行情: 给所有人发
             pubMarketData(cmd.marketDataMap);
-            //2.给柜台发送MatchData
+            //2.给柜台发送MatchData : 给某一个柜台单独发送消息
             pubMatcherData();
         }
 
@@ -57,7 +64,7 @@ public class L1PubHandler extends BaseHandler {
         if (matcherEventMap.size() == 0) {
             return;
         }
-
+        //线上不能有日志打印
         log.info(matcherEventMap);
 
         try {
@@ -77,10 +84,11 @@ public class L1PubHandler extends BaseHandler {
         }
 
     }
-
+    //规定往地址 -1 发送的,就是五档行情
     public static final short HQ_ADDRESS = -1;
 
     private void pubMarketData(IntObjectHashMap<L1MarketData> marketDataMap) {
+        //线上不能有日志打印
         log.info(marketDataMap);
         byte[] serialize = null;
         try {

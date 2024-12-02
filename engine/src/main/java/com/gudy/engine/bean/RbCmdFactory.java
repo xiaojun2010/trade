@@ -10,9 +10,9 @@ public class RbCmdFactory implements EventFactory<RbCmd> {
     @Override
     public RbCmd newInstance() {
         return RbCmd.builder()
-                .resultCode(CmdResultCode.SUCCESS)
-                .matchEventList(Lists.newArrayList())
-                .marketDataMap(new IntObjectHashMap<>())
+                .resultCode(CmdResultCode.SUCCESS)  //风控结果
+                .matchEventList(Lists.newArrayList()) //匹配结果
+                .marketDataMap(new IntObjectHashMap<>()) //行情
                 .build();
     }
 }

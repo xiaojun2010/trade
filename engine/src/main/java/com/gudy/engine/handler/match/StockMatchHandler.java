@@ -27,10 +27,14 @@ public class StockMatchHandler extends BaseHandler {
     private CmdResultCode processCmd(RbCmd cmd) {
         switch (cmd.command) {
             case NEW_ORDER:
+                //挂单
                 return orderBookMap.get(cmd.code).newOrder(cmd);
             case CANCEL_ORDER:
+                //撤单
                 return orderBookMap.get(cmd.code).cancelOrder(cmd);
             case HQ_PUB:
+                //行情推送
+                //遍历orderBook 一次性发布出去
                 orderBookMap.forEachKeyValue((code, orderBook) ->
                         cmd.marketDataMap.put(code, orderBook.getL1MarketDataSnapshot())
                 );
